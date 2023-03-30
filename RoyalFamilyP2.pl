@@ -24,14 +24,7 @@ is_older(X, Y) :-
 
 % Define succession rules
 precedes(X, Y) :-
-    male(X), female(Y), offspring(X, Parent), offspring(Y, Parent), not(queen(Y)).
-
-precedes(X, Y) :-
-    male(X), male(Y), offspring(X, Parent), offspring(Y, Parent), is_older(X, Y).
-
-precedes(X, Y) :-
-    female(X), female(Y), offspring(X, Parent), offspring(Y, Parent), 
-    not(queen(X)), not(queen(Y)), is_older(X, Y).
+    offspring(X, Parent), offspring(Y, Parent), is_older(X, Y), not(queen(X)), not(queen(Y)).
 
 % Define sorting algorithm 
 sort_succession_list([], []).
@@ -41,6 +34,7 @@ sort_succession_list([A|B], SortedList) :-
 % Inserts a person into a sorted succession list according to the precedes rule
 insert(A, [B|C], [B|D]) :- 
     not(precedes(A, B)), !, insert(A, C, D).
+
 insert(A, C, [A|C]).
 
 % Define a predicate for returning a sorted succession list
